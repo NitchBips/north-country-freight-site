@@ -1,12 +1,12 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Navigation } from "lucide-react";
 
 const states = [
-  "New Hampshire",
-  "Massachusetts",
-  "Vermont",
-  "Maine",
-  "Connecticut",
-  "Rhode Island",
+  { name: "New Hampshire", highlight: true },
+  { name: "Massachusetts", highlight: false },
+  { name: "Vermont", highlight: false },
+  { name: "Maine", highlight: false },
+  { name: "Connecticut", highlight: false },
+  { name: "Rhode Island", highlight: false },
 ];
 
 export default function CoverageArea() {
@@ -27,9 +27,14 @@ export default function CoverageArea() {
               </p>
               <div className="grid grid-cols-2 gap-3">
                 {states.map((state) => (
-                  <div key={state} className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-gold shrink-0" />
-                    <span className="text-ink font-medium">{state}</span>
+                  <div key={state.name} className="flex items-center gap-2">
+                    <MapPin className={`h-4 w-4 shrink-0 ${state.highlight ? "text-gold" : "text-forest"}`} />
+                    <span className={`font-medium ${state.highlight ? "text-gold" : "text-ink"}`}>
+                      {state.name}
+                      {state.highlight && (
+                        <span className="text-xs text-slate ml-1">(HQ)</span>
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -38,14 +43,48 @@ export default function CoverageArea() {
               </p>
             </div>
 
-            {/* Map placeholder */}
-            <div className="bg-forest/5 flex items-center justify-center p-10 md:p-14 min-h-[300px]">
-              <div className="text-center">
-                <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-forest/10 mb-4">
-                  <MapPin className="h-10 w-10 text-forest" />
+            {/* Styled map visual */}
+            <div className="bg-forest relative flex items-center justify-center p-10 md:p-14 min-h-[300px] overflow-hidden">
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div
+                  className="h-full w-full"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+              </div>
+
+              <div className="relative z-10 text-center space-y-6">
+                <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gold/15 border border-gold/30">
+                  <Navigation className="h-10 w-10 text-gold" />
                 </div>
-                <p className="text-slate font-medium">Service Area Map</p>
-                <p className="text-sm text-slate/60 mt-1">New England Region</p>
+                <div>
+                  <p className="font-heading text-xl font-bold text-cream">New England Region</p>
+                  <p className="text-cream/50 text-sm mt-1">6 states covered</p>
+                </div>
+
+                {/* Route lines visual */}
+                <div className="flex items-center justify-center gap-3 flex-wrap max-w-xs mx-auto">
+                  {["NH", "MA", "VT", "ME", "CT", "RI"].map((abbr, i) => (
+                    <div key={abbr} className="flex items-center gap-3">
+                      <span
+                        className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold ${
+                          abbr === "NH"
+                            ? "bg-gold text-white"
+                            : "bg-white/10 text-cream/80 border border-white/10"
+                        }`}
+                      >
+                        {abbr}
+                      </span>
+                      {i < 5 && (
+                        <div className="w-4 h-px bg-gold/40" />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

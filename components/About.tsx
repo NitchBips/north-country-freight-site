@@ -1,15 +1,39 @@
-import { Shield } from "lucide-react";
+import { Truck, Shield, Users } from "lucide-react";
 
 export default function About() {
   return (
     <section id="about" className="py-20 md:py-28 bg-slate/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Image placeholder */}
-          <div className="relative rounded-xl overflow-hidden bg-forest aspect-[4/3] flex items-center justify-center">
-            <div className="text-center p-8">
-              <Shield className="h-16 w-16 text-gold mx-auto mb-4" />
-              <p className="text-cream/60 text-sm font-medium">Company Photo</p>
+          {/* Visual panel instead of empty placeholder */}
+          <div className="relative rounded-xl overflow-hidden bg-forest aspect-[4/3] flex items-center justify-center p-10">
+            <div className="relative z-10 grid grid-cols-2 gap-6 w-full max-w-sm">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center border border-white/10">
+                <Truck className="h-8 w-8 text-gold mx-auto mb-2" />
+                <p className="text-2xl font-heading font-bold text-cream">Non-CDL</p>
+                <p className="text-xs text-cream/60 mt-1">Hotshot Fleet</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center border border-white/10">
+                <Shield className="h-8 w-8 text-gold mx-auto mb-2" />
+                <p className="text-2xl font-heading font-bold text-cream">100%</p>
+                <p className="text-xs text-cream/60 mt-1">Insured</p>
+              </div>
+              <div className="col-span-2 bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center border border-white/10">
+                <Users className="h-8 w-8 text-gold mx-auto mb-2" />
+                <p className="text-2xl font-heading font-bold text-cream">Owner-Operated</p>
+                <p className="text-xs text-cream/60 mt-1">Your freight gets personal attention</p>
+              </div>
+            </div>
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <div
+                className="h-full w-full"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+                  backgroundSize: "32px 32px",
+                }}
+              />
             </div>
             {/* Gold corner accent */}
             <div className="absolute top-0 right-0 w-20 h-20">

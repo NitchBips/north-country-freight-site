@@ -1,14 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Phone, Mail, MapPin } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Loader2 } from "lucide-react";
+import { submitContactForm } from "@/app/actions/contact";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const result = await submitContactForm(formData);
+
+    setLoading(false);
+    if (result.success) {
+      setSubmitted(true);
+    } else {
+      setError(result.error || "Something went wrong.");
+    }
   }
 
   return (
@@ -76,6 +90,11 @@ export default function Contact() {
                 onSubmit={handleSubmit}
                 className="rounded-xl bg-white border border-cream-dark p-8 shadow-sm space-y-5"
               >
+                {error && (
+                  <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
                 <div>
                   <label
                     htmlFor="name"
@@ -143,10 +162,20 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded-md bg-gold px-6 py-3 text-base font-semibold text-white shadow-sm transition-all hover:bg-gold-light hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                  disabled={loading}
+                  className="w-full rounded-md bg-gold px-6 py-3 text-base font-semibold text-white shadow-sm transition-all hover:bg-gold-light hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
                 >
-                  Send Message
-                  <Send className="h-4 w-4" />
+                  {loading ? (
+                    <>
+                      Sending...
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="h-4 w-4" />
+                    </>
+                  )}
                 </button>
               </form>
             )}
